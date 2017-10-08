@@ -1,0 +1,48 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Mon Oct 30 23:02:08 2017
+
+@author: yixi
+"""
+
+def splitDataSet(dataSet, index, value):
+    """splitDataSet(通过遍历dataSet数据集，求出index对应的colnum列的值为value的行)
+        就是依据index列进行分类，如果index列的数据等于 value的时候，就要将 index 划分到我们创建的新的数据集中
+    Args:
+        dataSet 数据集                 待划分的数据集
+        index 表示每一行的index列        划分数据集的特征
+        value 表示index列对应的value值   需要返回的特征的值。
+    Returns:
+        index列为value的数据集【该数据集需要排除index列】
+    """
+    retDataSet = []
+    for featVec in dataSet: 
+        # index列为value的数据集【该数据集需要排除index列】
+        # 判断index列的值是否为value
+        if featVec[index] == value:
+            # chop out index used for splitting
+            # [:index]表示前index行，即若 index 为2，就是取 featVec 的前 index 行
+            reducedFeatVec = featVec[:index]
+            '''
+            请百度查询一下： extend和append的区别
+            list.append(object) 向列表中添加一个对象object
+            list.extend(sequence) 把一个序列seq的内容添加到列表中
+            1、使用append的时候，是将new_media看作一个对象，整体打包添加到music_media对象中。
+            2、使用extend的时候，是将new_media看作一个序列，将这个序列和music_media序列合并，并放在其后面。
+            result = []
+            result.extend([1,2,3])
+            print result
+            result.append([4,5,6])
+            print result
+            result.extend([7,8,9])
+            print result
+            结果：
+            [1, 2, 3]
+            [1, 2, 3, [4, 5, 6]]
+            [1, 2, 3, [4, 5, 6], 7, 8, 9]
+            '''
+            reducedFeatVec.extend(featVec[index+1:])
+            # [index+1:]表示从跳过 index 的 index+1行，取接下来的数据
+            # 收集结果值 index列为value的行【该行需要排除index列】
+            retDataSet.append(reducedFeatVec)
+    return retDataSet
