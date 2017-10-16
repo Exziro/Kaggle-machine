@@ -128,3 +128,26 @@ def setOfWords2Vec(vocabList, inputSet):
         return 1
     else:
         return 0
+		
+	def testingNB():
+    """
+    测试朴素贝叶斯算法
+    """
+    # 1. 加载数据集
+    listOPosts, listClasses = loadDataSet()
+    # 2. 创建单词集合
+    myVocabList = createVocabList(listOPosts)
+    # 3. 计算单词是否出现并创建数据矩阵
+    trainMat = []
+    for postinDoc in listOPosts:
+        # 返回m*len(myVocabList)的矩阵， 记录的都是0，1信息
+        trainMat.append(setOfWords2Vec(myVocabList, postinDoc))
+    # 4. 训练数据
+    p0V, p1V, pAb = trainNB0(array(trainMat), array(listClasses))
+    # 5. 测试数据
+    testEntry = ['love', 'my', 'dalmation']
+    thisDoc = array(setOfWords2Vec(myVocabList, testEntry))
+    print testEntry, 'classified as: ', classifyNB(thisDoc, p0V, p1V, pAb)
+    testEntry = ['stupid', 'garbage']
+    thisDoc = array(setOfWords2Vec(myVocabList, testEntry))
+    print testEntry, 'classified as: ', classifyNB(thisDoc, p0V, p1V, pAb)	
